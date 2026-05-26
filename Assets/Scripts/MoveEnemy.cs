@@ -77,4 +77,16 @@ public class MoveEnemy : MonoBehaviour
         }
         return distance;
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerController player =
+                collision.gameObject.GetComponent<PlayerController>();
+
+            player.TakeDamage(10f);
+        }
+    }
+
 }

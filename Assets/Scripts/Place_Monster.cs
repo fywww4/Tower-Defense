@@ -38,13 +38,17 @@ public class Place_Monster : MonoBehaviour
             audioSource.PlayOneShot(audioSource.clip);
             gameManager.Gold -= monster.GetComponent<Monster_Data>().CurrentLevel.cost;
         }
-
-        else if (CanPlaceMonster()) 
+        else if (CanUpgradeMonster())
         {
-            monster.GetComponent<Monster_Data>().IncreaseLevel();
-            AudioSource audioSource = gameObject.GetComponent<AudioSource>();
-            audioSource.PlayOneShot(audioSource.clip);
-            gameManager.Gold -= monster.GetComponent<Monster_Data>().CurrentLevel.cost;
+            Monster_Data monsterData = monster.GetComponent<Monster_Data>();
+            MonsterLevel nextLevel = monsterData.GetNextLevel();
+            if (nextLevel != null)
+            {
+                monsterData.IncreaseLevel();
+                AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+                audioSource.PlayOneShot(audioSource.clip);
+                gameManager.Gold -= nextLevel.cost;
+            }
         }
     }
 
@@ -56,7 +60,6 @@ public class Place_Monster : MonoBehaviour
             MonsterLevel nextLevel = monsterData.GetNextLevel();
             if (nextLevel != null)
             {
-                //return true;
                 return gameManager.Gold >= nextLevel.cost;
             }
         }
